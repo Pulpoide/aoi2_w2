@@ -3,36 +3,41 @@
 <body>
     <div class="container">
         <h1>Agregar Producto:</h1>
-         <form action="/api/1.0/products/create" method="POST">
+         <form id="formEditar">
             <input
             type="text"
             placeholder="Nombre"
             class="form-control my-2"
             name="nombre"
+            required
             >
             <input
             type="text"
             placeholder="Descripcion"
             class="form-control my-2"
             name="descripcion"
+            required
             >
             <input
-            type="text"
+            type="number"
             placeholder="Precio"
             class="form-control my-2"
             name="precio"
+            required
             >
             <input
             type="text"
             placeholder="Marca"
             class="form-control my-2"
             name="marca"
+            required
             >
             <input
-            type="text"
+            type="number"
             placeholder="Stock"
             class="form-control my-2"
             name="stock"
+            required
             >
             <input
             type="file"
@@ -40,12 +45,46 @@
             class="form-control my-2"
             name="img"
             >
-            <button class="btn btn-success block" type="submit">Agregar</button>
+            
+            <input  class="btn btn-success btn-lg w-100" type="submit" role="button"/> 
+
          </form>
+         <a href="http://localhost:8888/productos">
+            <button class="btn btn-dark btn-lg my-2 w-100">Volver</button>
+        </a>
     </div>
-
-
-
-
 </body>
 </html>
+
+
+<script>
+    const formEditar = document.querySelector('#formEditar')
+
+    formEditar.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nombre = formEditar.elements['nombre'].value;
+        const descripcion = formEditar.elements['descripcion'].value;
+        const precio = formEditar.elements['precio'].value;
+        const marca = formEditar.elements['marca'].value;
+        const stock = formEditar.elements['stock'].value;
+        const img = formEditar.elements['img'].value;
+
+        try{
+            const data = await fetch(`http://localhost:8888/api/1.0/products/create`, { 
+                method: 'post',
+                headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({nombre, descripcion, precio, marca, stock,img})
+        })
+        const res = await data.json();
+        if(res){
+            window.location.href = `/productos`
+        }
+
+        }catch(error){
+            console.log(error);
+        }
+
+    })
+
+</script>
